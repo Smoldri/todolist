@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,8 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
+Route::get('/items', [ItemController::class, 'index']);
+Route::post('/store', [ItemController::class, 'store']);
 
 Route::middleware([
     'auth:sanctum',
@@ -29,3 +30,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
