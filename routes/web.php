@@ -18,8 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/items', [ItemController::class, 'index']);
-Route::post('/store', [ItemController::class, 'store']);
+Route::get('/dashboard/todo', [ItemController::class, 'index'])->name('todo');
+Route::post('/store', [ItemController::class, 'store'])->name('store');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/todo', function () {
+    return view('todolist');
+})->name('dashboard-todo');
+
 
 Route::middleware([
     'auth:sanctum',

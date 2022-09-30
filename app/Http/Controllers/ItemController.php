@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Item;
@@ -12,24 +14,27 @@ use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return DB::table('items')->where('user_id', Auth::id())->value('description');;
+        $items = Item::all();
+        dd("test");
+        return view('todolist', ['items' => $items]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -41,12 +46,12 @@ class ItemController extends Controller
     public function store()
     {
         $data = request()->all();
-
         $newItem = new Item();
-        //On the left is the field name in DB and on the right is field name in Form/view
         $newItem->description = $data['description'];
+        $newItem->user_id = Auth::id();
         $newItem->save();
-        return redirect('/dashboard');
+
+        return redirect('/dashboard/todo');
     }
 
     /**
