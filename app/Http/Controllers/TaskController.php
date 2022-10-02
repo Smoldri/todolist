@@ -7,12 +7,13 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Item;
+use App\Models\Task;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class ItemController extends Controller
+class TaskController extends Controller
 {
 
     /**
@@ -22,9 +23,8 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        dd("test");
-        return view('todolist', ['items' => $items]);
+        $tasks = Task::where('user_id', Auth::id())->get()->sortByDesc('created_at')->sortBy('completed');
+        return view('todolist', ['tasks' => $tasks]);
     }
 
     /**
@@ -40,18 +40,18 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return Application|RedirectResponse|Redirector
      */
     public function store()
     {
         $data = request()->all();
-        $newItem = new Item();
-        $newItem->description = $data['description'];
-        $newItem->user_id = Auth::id();
-        $newItem->save();
+        $newTask = new Task();
+        $newTask->description = $data['description'];
+        $newTask->user_id = Auth::id();
+        $newTask->save();
 
-        return redirect('/dashboard/todo');
+        return redirect('/task');
     }
 
     /**
@@ -79,23 +79,43 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Application|Redirector|RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function markAsCompleted(Task $task)
     {
-        //
+        $task->completed = true;
+        $task->save();
+
+        return redirect('task');
+
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Task $task
+     * @return Application|Redirector|RedirectResponse
+     */
+    public function markAsToDo(Task $task)
+    {
+        $task->completed = false;
+        $task->save();
+        return redirect('task');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Redirector|RedirectResponse
      */
-    public function destroy($id)
+    public function delete(Task $task)
     {
-        //
+        $task->delete();
+
+        return redirect('task');
     }
 }

@@ -12,13 +12,16 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+
+                    <x-jet-nav-link href="{{ route('task') }}" :active="request()->routeIs('task')">
+                        {{ __('To-do List') }}
+                    </x-jet-nav-link>
+
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="{{ route('dashboard-todo') }}" :active="request()->routeIs('dashboard-todo')">
-                        {{ __('To-do List') }}
-                    </x-jet-nav-link>
+
 
                 </div>
 

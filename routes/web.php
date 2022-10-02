@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard/todo', [ItemController::class, 'index'])->name('todo');
-Route::post('/store', [ItemController::class, 'store'])->name('store');
+//Route::get('/dashboard/todo', [TaskController::class, 'index'])->name('todo');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/todo', function () {
-    return view('todolist');
-})->name('dashboard-todo');
+//Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/todo', [TaskController::class, 'index'])->name('dashboard-todo');
 
 
 Route::middleware([
@@ -31,11 +30,17 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
+    Route::get('/task', [TaskController::class, 'index'])->name('task');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::post('/store', [TaskController::class, 'store'])->name('store');
+    Route::patch('/complete/{task}', [TaskController::class, 'markAsCompleted'])->name('complete');
+    Route::patch('/todo/{task}', [TaskController::class, 'markAsToDo'])->name('todo');
+    Route::delete('/delete/{task}', [TaskController::class, 'delete'])->name('delete');
+
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
