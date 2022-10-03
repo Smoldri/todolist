@@ -31,6 +31,7 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/task', [TaskController::class, 'index'])->name('task');
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -39,6 +40,8 @@ Route::middleware([
     Route::patch('/todo/{task}', [TaskController::class, 'markAsToDo'])->name('todo');
     Route::delete('/delete/{task}', [TaskController::class, 'delete'])->name('delete');
     Route::post('/add-image', [ImageController::class, 'addImage'])->name('add-image');
+    Route::post('/store-image', [ImageController::class, 'storeImage'])->name('store-image');
+    Route::get('/view-image', [ImageController::class, 'viewImage'])->name('view-image');
 
 });
 

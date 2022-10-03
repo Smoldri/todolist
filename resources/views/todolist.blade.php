@@ -1,4 +1,6 @@
+
 <x-app-layout>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('To-do list') }}
@@ -42,7 +44,6 @@
                         <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
 
                             @foreach($tasks as $task)
-
                                     <ul>
                                         <li class="row @if ($task->completed) font-weight-bold @endif">{{$task->description}}
                                             @if($task->completed)
@@ -89,8 +90,22 @@
                                                             <td>Task created: {{$task->created_at}}</td>
                                                             <br>
                                                             <td>Task updated:{{$task->updated_at}}</td>
-                                                            <form method="post" action="{{route('add-image')}}">
 
+{{--                                                            @foreach($images as $image)--}}
+
+{{--                                                                <img src="{{url('public/Image' .$image->image)}}">--}}
+
+{{--                                                            @endforeach--}}
+                                                            @if ($message = Session::get('success'))
+                                                                <div class="alert alert-success alert-block">
+                                                                    <strong>{{$message}}</strong>
+                                                                </div>
+                                                            @endif
+                                                            <form method="post" action="{{route('store-image')}}" enctype="multipart/form-data">
+                                                                @csrf
+                                                                <input type="file" class="form-control" required name="image">
+                                                                <input type="hidden" name="task_id" value="{{$task->id}}">
+                                                                <button type="submit" class="btn btn-success">Add image</button>
                                                             </form>
                                                         </div>
                                                         <div class="modal-footer">
