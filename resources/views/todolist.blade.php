@@ -16,7 +16,7 @@
                                 <div class="alert alert-danger">
                                     <ul>
                                         @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
+                                            <li>{{ 'New task field must be filled' }}</li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -43,14 +43,23 @@
 
                             @foreach($tasks as $task)
 
-                                @if($task->completed)
                                     <ul>
                                         <li class="row">{{$task->description}}
-                                            <form class="col" action="{{route('todo', $task)}}" method="post">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="btn btn-warning">To-do</button>
-                                            </form>
+                                            @if($task->completed)
+                                                <form class="col" action="{{route('todo', $task)}}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-warning">To-do</button>
+                                                </form>
+                                            @else
+                                                <form class="col align-content-lg-center"
+                                                      action="{{route('complete', $task)}}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button class="btn btn-success" type="submit">Done</button>
+                                                </form>
+                                            @endif
+
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-info" data-toggle="modal"
                                                     data-target="#exampleModalCenter">
@@ -102,66 +111,6 @@
                                         </li>
 
                                     </ul>
-
-                                @else
-                                    <ul>
-                                        <li class="row">{{$task->description}}
-                                            <form class="col align-content-lg-center"
-                                                  action="{{route('complete', $task)}}" method="post">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button class="btn btn-success" type="submit">Done</button>
-                                            </form>
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-info" data-toggle="modal"
-                                                    data-target="#exampleModalCenter">
-                                                Details
-                                            </button>
-
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal
-                                                                title</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <td>Task description: {{$task->description}}</td>
-                                                            <br>
-                                                            <td>Task status:{{$task->completed}}</td>
-                                                            <br>
-                                                            <td>Task completed: {{$task->completed_at}}</td>
-                                                            <br>
-                                                            <td>Task created: {{$task->created_at}}</td>
-                                                            <br>
-                                                            <td>Task updated:{{$task->updated_at}}</td>
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary">Save changes
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <form class="col-6 align-content-lg-center"
-                                                  action="{{route('delete', $task)}}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger" type="submit">delete</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                @endif
 
                             @endforeach
 
