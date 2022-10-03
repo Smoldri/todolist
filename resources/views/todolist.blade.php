@@ -24,7 +24,7 @@
                             <form action="{{route('store')}}" method="post">
                                 @csrf
                                 <div>
-                                    <label for="description">Enter a task here</label><br>
+                                    <label for="description" >Enter a task here</label><br>
                                     <label>
                                         <input placeholder="New task" name="description" type="text"/>
                                     </label>
@@ -44,7 +44,7 @@
                             @foreach($tasks as $task)
 
                                     <ul>
-                                        <li class="row">{{$task->description}}
+                                        <li class="row @if ($task->completed) font-weight-bold @endif">{{$task->description}}
                                             @if($task->completed)
                                                 <form class="col" action="{{route('todo', $task)}}" method="post">
                                                     @csrf
@@ -89,7 +89,9 @@
                                                             <td>Task created: {{$task->created_at}}</td>
                                                             <br>
                                                             <td>Task updated:{{$task->updated_at}}</td>
+                                                            <form method="post" action="{{route('add-image')}}">
 
+                                                            </form>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"

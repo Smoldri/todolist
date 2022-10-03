@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +38,7 @@ Route::middleware([
     Route::patch('/complete/{task}', [TaskController::class, 'markAsCompleted'])->name('complete');
     Route::patch('/todo/{task}', [TaskController::class, 'markAsToDo'])->name('todo');
     Route::delete('/delete/{task}', [TaskController::class, 'delete'])->name('delete');
+    Route::post('/add-image', [ImageController::class, 'addImage'])->name('add-image');
 
 });
 

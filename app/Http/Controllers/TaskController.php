@@ -23,7 +23,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::where('user_id', Auth::id())->get()->sortByDesc('created_at')->sortBy('completed');
+        $tasks = Task::where('user_id', Auth::id())->get()->sortByDesc('updated_at')->sortBy('completed');
         return view('todolist', ['tasks' => $tasks]);
     }
 
