@@ -43,9 +43,13 @@ class TaskController extends Controller
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
      */
-    public function store()
+    public function store(Request $request)
     {
+        $this->validate($request, [
+            'description' => 'required'
+        ]);
         $data = request()->all();
+
         $newTask = new Task();
         $newTask->description = $data['description'];
         $newTask->user_id = Auth::id();
