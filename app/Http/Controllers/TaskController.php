@@ -90,6 +90,7 @@ class TaskController extends Controller
     public function markAsCompleted(Task $task)
     {
         $task->completed = true;
+        $task->completed_at = now();
         $task->save();
 
         return redirect('task');
@@ -106,6 +107,7 @@ class TaskController extends Controller
     public function markAsToDo(Task $task)
     {
         $task->completed = false;
+        $task->completed_at = null;
         $task->save();
         return redirect('task');
     }
@@ -116,10 +118,18 @@ class TaskController extends Controller
      * @param  int  $id
      * @return Application|Redirector|RedirectResponse
      */
-    public function delete(Task $task)
+    public function deleteTask(Task $task)
     {
         $task->delete();
 
         return redirect('task');
+    }
+
+    public function editTask(Task $task)
+    {
+        $task->updated_at = now();
+        $task->save();
+        return redirect('task');
+
     }
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,17 +32,22 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/task', [TaskController::class, 'index'])->name('task');
-    Route::get('/view-image/{$task-id}', [ImageController::class, 'viewImage'])->name('view-image');
+
+    Route::get('/users', [UserController::class, 'index'])
+    ->name('users');
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
     Route::post('/store', [TaskController::class, 'store'])->name('store');
     Route::patch('/complete/{task}', [TaskController::class, 'markAsCompleted'])->name('complete');
     Route::patch('/todo/{task}', [TaskController::class, 'markAsToDo'])->name('todo');
-    Route::delete('/delete/{task}', [TaskController::class, 'delete'])->name('delete');
+    Route::patch('/edit/{task}', [TaskController::class, 'editTask'])->name('edit-task');
+    Route::delete('/delete/{task}', [TaskController::class, 'deleteTask'])->name('delete');
     Route::post('/add-image', [ImageController::class, 'addImage'])->name('add-image');
-    Route::post('/store-image', [ImageController::class, 'storeImage'])->name('store-image');
-
+    Route::get('/view-image/{$task-id}', [ImageController::class, 'viewImage'])->name('view-image');
+    Route::delete('/delete-image/{image}', [Imagecontroller::class, 'deleteImage'])->name('delete-image');
 
 });
 
