@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Task;
 
 
 class ImageController extends Controller
@@ -34,7 +35,12 @@ class ImageController extends Controller
             'task_id' =>$request->task_id
         ]);
 
-        return back()->with('success', 'Image uploaded Successfully!');
+        $description = Task::where('id', $request->task_id)->pluck('description');
+
+        session()->
+        flash('success', 'Image has been added to' . ' task ' . $description );
+
+        return back();
     }
 
 
@@ -44,7 +50,7 @@ class ImageController extends Controller
         return view('todolist', ['images', $images]);
     }
 
-    public function deleteImage(Image $image)
+    public static function deleteImage(Image $image)
     {
         $image->delete();
         Storage::delete("$image->image");

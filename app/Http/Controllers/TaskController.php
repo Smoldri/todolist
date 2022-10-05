@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ImageController;
+use App\Models\Image;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,6 +14,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -23,7 +26,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('image')->where('user_id', Auth::id())->get()->sortByDesc('updated_at')->sortBy('completed');
+        $tasks = Task::with('image')->where('user_id', Auth::id())
+            ->status()->description()
+            ->get()
+            ->sortByDesc('updated_at')->sortByDesc('completed');
+
         return view('todolist', ['tasks' => $tasks]);
     }
 
@@ -48,12 +55,15 @@ class TaskController extends Controller
         $this->validate($request, [
             'description' => 'required'
         ]);
+
         $data = request()->all();
 
         $newTask = new Task();
         $newTask->description = $data['description'];
         $newTask->user_id = Auth::id();
         $newTask->save();
+
+        session()->flash('success', 'A new task has been added');
 
         return redirect('/task');
     }
@@ -89,7 +99,7 @@ class TaskController extends Controller
      */
     public function markAsCompleted(Task $task)
     {
-        $task->completed = true;
+        $task->completed = 1;
         $task->completed_at = now();
         $task->save();
 
@@ -106,7 +116,7 @@ class TaskController extends Controller
      */
     public function markAsToDo(Task $task)
     {
-        $task->completed = false;
+        $task->completed = 2;
         $task->completed_at = null;
         $task->save();
         return redirect('task');
@@ -120,9 +130,15 @@ class TaskController extends Controller
      */
     public function deleteTask(Task $task)
     {
-        $task->delete();
+        $taskImage = Image::where('task_id', $task->id)->first();
 
+        if ($taskImage) {
+            ImageController::deleteImage($taskImage);
+        }
+        $task->delete();
         return redirect('task');
+
+
     }
 
     public function editTask(Task $task)

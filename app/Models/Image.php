@@ -18,4 +18,6 @@ class Image extends Model
     public function task(){
         return $this->belongsTo(Task::class);
     }
+
+
 }

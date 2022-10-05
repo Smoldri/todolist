@@ -21,9 +21,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get('/dashboard/todo', [TaskController::class, 'index'])->name('todo');
-
-//Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/todo', [TaskController::class, 'index'])->name('dashboard-todo');
 
 
 Route::middleware([
@@ -32,9 +29,7 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/task', [TaskController::class, 'index'])->name('task');
-
-    Route::get('/users', [UserController::class, 'index'])
-    ->name('users');
+    Route::get('/users', [UserController::class, 'index'])->name('users');
 
     Route::get('/dashboard', function () {
         return view('dashboard');
