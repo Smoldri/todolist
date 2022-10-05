@@ -7,11 +7,11 @@
     <body>
     <section>
 
-        <div class="container-fluid py-12">
+        <div class="container-fluid py-10">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-5 justify-content-center tes">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg container-fluid">
                     <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
-                        <div>
+                        <div class="text-center">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -35,14 +35,28 @@
                             </form>
                         </div>
                     </div>
-
                     <div>
 
-                        <div class="container">
+                            <div class="container ">
+                                <div class="form-check">
+                                    <input name="completed" class="form-check-input" type="checkbox" value="">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Show completed
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Show WIP
+                                    </label>
+                                </div>
+
+
+
                             @foreach($tasks as $task)
                                 <div>
                                     <table>
-                                        <div>
+                                        <div class="border-b border-gray-200">
                                             <td class="col task-font @if ($task->completed) linethrough @endif">{{$task->description}}
                                             </td>
                                         </div>
@@ -146,22 +160,19 @@
                                                         </label>
                                                     </div>
 
-                                                    <div class="col">
-                                                        <button type="submit"
-                                                                class="px-4 py-2 text-sm text-white bg-indigo-600 rounded">
-                                                            Submit
-                                                        </button>
-                                                    </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Save changes
+                                                            </button>
+                                                        </div>
+
 
                                                 </form>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close
-                                                </button>
-                                                <button type="button" class="btn btn-primary">Save changes
-                                                </button>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
