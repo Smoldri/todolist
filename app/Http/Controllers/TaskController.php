@@ -135,7 +135,9 @@ class TaskController extends Controller
         if ($taskImage) {
             ImageController::deleteImage($taskImage);
         }
+
         $task->delete();
+        session()->flash('success', 'Task has been deleted');
         return redirect('task');
 
 

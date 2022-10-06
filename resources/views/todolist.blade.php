@@ -53,7 +53,6 @@
                                         value="1"
                                         onclick="this.form.submit()"
 
-
                                     >
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Show completed tasks
@@ -66,7 +65,6 @@
                                         value="2"
                                         onclick="this.form.submit()"
 
-
                                     >
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Show todo tasks
@@ -77,7 +75,6 @@
                                         type="radio"
                                         value=""
                                         onclick="this.form.submit()"
-
                                     >
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Show all tasks
@@ -85,7 +82,6 @@
                                 </form>
                                 <br>
                             </div>
-
 
                             <div class="container ">
                                 <div class="form-check">
@@ -100,7 +96,6 @@
                                     </form>
                                     <br>
                                 </div>
-
 
                                 @foreach($tasks as $task)
                                     <div>
@@ -239,15 +234,6 @@
     <script>
         $('input[type=radio]').click(function () {
             $("filter").submit();
-        });
-        $(document).ready(function () {
-            $("input:radio:checked").data("chk", true);
-            $("input:radio").click(function () {
-                $("input[name='status" + $(this).attr("status") + "']:radio").not(this).removeData("chk");
-                $(this).data("chk", !$(this).data("chk"));
-                $(this).prop("checked", $(this).data("chk"));
-                $(this).button('refresh'); // in case you change the radio elements dynamically
-            });
         });
 
     </script>
